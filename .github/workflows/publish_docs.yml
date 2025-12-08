@@ -1,4 +1,4 @@
-name: 'Run typedoc and publish to pages'
+name: Publish GH Pages
 
 on:
   workflow_call:
