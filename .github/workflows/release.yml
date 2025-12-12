@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   # ci:
-  #   name: Continuous Integration
+  #   name: Continuous Integrations
   #   uses: makerxstudio/shared-config/.github/workflows/node-ci.yml@main
   #   with:
   #     node-version: 20.x
