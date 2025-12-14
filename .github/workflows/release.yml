@@ -31,7 +31,7 @@ jobs:
           private_key: ${{ secrets.BOT_SK }}
 
   on_main_merge:
-    needs: generate_token
+    needs: generate_tokens
     name: Run On Merge Main Workflow
     uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@ci/release-workflow
     with:
