@@ -35,7 +35,7 @@ jobs:
   #   uses: algorandfoundation/algokit-shared-config/.github/workflows/check-docs.yml@ci/check-docs
 
   build:
-    name: Build
+    name: Builds
     uses: algorandfoundation/algokit-shared-config/.github/workflows/algokit-node-build-zip.yml@ci/ak-node-build
     needs:
       - ci
