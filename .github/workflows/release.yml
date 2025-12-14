@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - release
-      - ci/ak-node-build
+      - ci/release-workflow
   workflow_dispatch:
 
 permissions:
@@ -13,86 +13,28 @@ permissions:
   pages: write
 
 jobs:
-  # ci:
-  #   name: Continuous Integration
-  #   uses: makerxstudio/shared-config/.github/workflows/node-ci.yml@main
-  #   with:
-  #     node-version: 20.x
-  #     run-commit-lint: true
-  #     pre-test-script: |
-  #       pipx install algokit
-  #       algokit localnet start
-  #       npx --yes wait-on tcp:4001 -t 30000
-  #     audit-script: |
-  #       npm run audit
+  # Job 1: Generate the bot token and expose it as a job output.
+  generate_token:
+    runs-on: ubuntu-latest
+    name: Generate Bot Token
 
-  # generate-publish-docs:
-  #   name: Publish docs
-  #   uses: algorandfoundation/algokit-shared-config/.github/workflows/handle-docs.yml@ci/reusable_docs_generation
+    # 🚨 FIX 1: Define an output for this job to store the generated token.
+    outputs:
+      bot_token_out: ${{ steps.app_token.outputs.token }}
 
-  # check-docs:
-  #   name: Check docs
-  #   uses: algorandfoundation/algokit-shared-config/.github/workflows/check-docs.yml@ci/check-docs
+    steps:
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@v1
+        id: app_token
+        with:
+          app_id: ${{ secrets.BOT_ID }}
+          private_key: ${{ secrets.BOT_SK }}
 
-  build:
-    name: Builds
-    uses: algorandfoundation/algokit-shared-config/.github/workflows/node-build-zip.yml@ci/ak-node-build
-    # needs:
-    #   - ci
-    with:
-      node-version: 20.x
-      build-path: dist
-      artifact-name: package
+  on_main_merge:
+    needs: generate_token
+    name: Run On Merge Main Workflow
+    uses: algorandfoundation/.github/workflows/on-merge-main.yml@ci/release-workflow
     secrets:
-      npm-auth-token: ${{ secrets.NPM_TOKEN }}
+      npm-auth-token: ${{ secrets.NPM_AUTH_TOKEN }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  # release:
-  #   name: Release
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Step to generate the bot token for semantic release
-  #     - name: Generate bot token
-  #       uses: actions/create-github-app-token@v1
-  #       id: app_token
-  #       with:
-  #         app_id: ${{ secrets.BOT_ID}}
-  #         private_key: ${{ secrets.BOT_SK }}
-
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-  #         token: ${{ steps.app_token.outputs.token }}
-
-  #     # Set git user to the GitHub App
-  #     - name: Set Git user as GitHub actions
-  #       run: git config --global user.email "179917785+engineering-ci[bot]@users.noreply.github.com" && git config --global user.name "engineering-ci[bot]"
-
-  #     # semantic-release needs node 20
-  #     - name: Use Node.js 20.x
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 20.x
-
-  #     - name: Download built package
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: package
-  #         path: artifacts
-
-  #     - name: Unzip package
-  #       shell: bash
-  #       run: |
-  #         mkdir -p dist
-  #         unzip -q "artifacts/package.zip" -d dist
-
-  #     - name: Install dependencies to get semantic release components and plugins
-  #       run: npm ci --ignore-scripts
-
-  #     - name: 'Semantic release'
-  #       run: npx semantic-release
-  #       env:
-  #         # Use the GitHub App token for authentications
-  #         GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
-  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      bot-token: ${{ needs.generate_token.outputs.bot_token_out }}
