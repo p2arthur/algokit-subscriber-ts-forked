@@ -33,7 +33,7 @@ jobs:
   on_main_merge:
     needs: generate_token
     name: Run On Merge Main Workflow
-    uses: algorandfoundation/.github/workflows/on-merge-main.yml@ci/release-workflow
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@ci/release-workflow
     secrets:
       npm-auth-token: ${{ secrets.NPM_AUTH_TOKEN }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
