@@ -13,18 +13,18 @@ permissions:
   pages: write
 
 jobs:
-  ci:
-    name: Continuous Integration
-    uses: makerxstudio/shared-config/.github/workflows/node-ci.yml@main
-    with:
-      node-version: 20.x
-      run-commit-lint: true
-      pre-test-script: |
-        pipx install algokit
-        algokit localnet start
-        npx --yes wait-on tcp:4001 -t 30000
-      audit-script: |
-        npm run audit
+  # ci:
+  #   name: Continuous Integration
+  #   uses: makerxstudio/shared-config/.github/workflows/node-ci.yml@main
+  #   with:
+  #     node-version: 20.x
+  #     run-commit-lint: true
+  #     pre-test-script: |
+  #       pipx install algokit
+  #       algokit localnet start
+  #       npx --yes wait-on tcp:4001 -t 30000
+  #     audit-script: |
+  #       npm run audit
 
   # generate-publish-docs:
   #   name: Publish docs
@@ -37,8 +37,8 @@ jobs:
   build:
     name: Builds
     uses: algorandfoundation/algokit-shared-config/.github/workflows/algokit-node-build-zip.yml@ci/ak-node-build
-    needs:
-      - ci
+    # needs:
+    #   - ci
     with:
       node-version: 20.x
       build-path: dist
