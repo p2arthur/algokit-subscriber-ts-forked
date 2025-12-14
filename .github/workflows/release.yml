@@ -23,7 +23,7 @@ jobs:
       bot_token_out: ${{ steps.app_token.outputs.token }}
 
     steps:
-      - name: Create GitHu  b App Token
+      - name: Create GitHub App Token
         uses: actions/create-github-app-token@v1
         id: app_token
         with:
