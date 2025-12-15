@@ -36,5 +36,5 @@ jobs:
     uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@ci/release-workflow
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BOT_TOKEN: ${{ needs.generate_token.outputs.bot_token_out }}
