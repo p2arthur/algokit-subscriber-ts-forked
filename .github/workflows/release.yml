@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - release
-      - ci/ak-node-build
+      - pr/ak-release-workflow
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
   on_main_merge:
     needs: generate_token
     name: Run On Merge Main Workflow
-    uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@ci/release-workflow
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@pr/release-workflow
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
