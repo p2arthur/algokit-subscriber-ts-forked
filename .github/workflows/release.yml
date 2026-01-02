@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - release
-      - pr/ak-release-workflow
+      - ref/consistency-ref-implementation
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
   on_main_merge:
     needs: generate_token
     name: Run On Merge Main Workflow
-    uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@pr/release-workflow
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml@ref/consistency-ref-implementation
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
