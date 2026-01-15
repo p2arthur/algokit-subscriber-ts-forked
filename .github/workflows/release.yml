@@ -1,4 +1,4 @@
-name: Publish
+name: On Main Merge
 
 on:
   push:
@@ -7,14 +7,17 @@ on:
       - release
   workflow_dispatch:
 
-concurrency: release
+permissions:
+  # We give write permissions for the publish docs workflow
+  id-token: write
+  pages: write
 
 jobs:
   ci:
     name: Continuous Integration
     uses: makerxstudio/shared-config/.github/workflows/node-ci.yml@main
     with:
-      node-version: 20.x
+      node-version: 22.x
       run-commit-lint: true
       pre-test-script: |
         pipx install algokit
@@ -40,6 +43,11 @@ jobs:
           # Print changed files and error out if there are changes after generating docs
           git diff --exit-code --name-only
 
+  generate-publish-docs:
+    needs: check_docs
+    name: Publish docs
+    uses: algorandfoundation/algokit-shared-config/.github/workflows/build-and-publish-docs.yml@main
+
   build:
     name: Build
     uses: makerxstudio/shared-config/.github/workflows/node-build-zip.yml@main
@@ -47,7 +55,7 @@ jobs:
       - ci
       - check_docs
     with:
-      node-version: 20.x
+      node-version: 22.x
       build-path: dist
       artifact-name: package
 
@@ -56,7 +64,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-
       # Step to generate the bot token for semantic release
       - name: Generate bot token
         uses: actions/create-github-app-token@v1
@@ -74,11 +81,11 @@ jobs:
       - name: Set Git user as GitHub actions
         run: git config --global user.email "179917785+engineering-ci[bot]@users.noreply.github.com" && git config --global user.name "engineering-ci[bot]"
 
-      # semantic-release needs node 20
-      - name: Use Node.js 20.x
+      # semantic-release needs node 22
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x
+          node-version: 22.x
 
       - name: Download built package
         uses: actions/download-artifact@v4
@@ -98,6 +105,6 @@ jobs:
       - name: 'Semantic release'
         run: npx semantic-release
         env:
-          # Use the GitHub App token for authentication
+          # Use the GitHub App token for authentications
           GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
