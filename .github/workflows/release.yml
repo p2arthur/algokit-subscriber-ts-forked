@@ -11,6 +11,7 @@ on:
 concurrency: release
 
 permissions:
+  pages: write
   contents: read
   id-token: write
 
