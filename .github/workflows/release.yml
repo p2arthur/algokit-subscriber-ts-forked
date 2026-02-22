@@ -10,6 +10,10 @@ on:
 
 concurrency: release
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   ci:
     uses: algorandfoundation/algokit-shared-config/.github/workflows/node-ci.yml@main
