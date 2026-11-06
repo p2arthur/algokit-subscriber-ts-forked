@@ -1,3 +1,27 @@
+# AlgoKit TypeScript Subscriber Experiments
+
+Fork of the AlgoKit TypeScript transaction subscriber used for documentation-publishing and workflow experiments.
+
+The subscriber implementation remains the upstream library’s work. This fork’s history and workflow files capture the local integration changes.
+
+## Provenance
+
+This repository is a fork of [algorandfoundation/algokit-subscriber-ts](https://github.com/algorandfoundation/algokit-subscriber-ts). Upstream authorship and license terms apply to the retained source. The fork may differ from the upstream default branch; inspect its commit history when reviewing a specific implementation.
+
+## Explore the repository
+
+- [`docs/`](docs/)
+- [`src/`](src/)
+- [`tests/`](tests/)
+- [`examples/`](examples/)
+
+## Project documentation
+
+The existing guide below preserves the project-specific setup, examples, and credits. Its commands describe the checked-in project; no deployment or transaction is performed by reading this repository.
+
+<details>
+<summary>Read the project guide</summary>
+
 # Algorand transaction subscription / indexing
 
 This library a simple, but flexible / configurable Algorand transaction subscription / indexing mechanism. It allows you to quickly create Node.js or JavaScript services that follow or subscribe to the Algorand Blockchain.
@@ -236,3 +260,9 @@ To try examples in this repository:
 - `npm install`
 - Copy `.env.sample` to `.env` and edit to point to the Algorand node you want
 - `npm run dhm` or F5 in Visual Studio Code to get breakpoint debugging against one of the examples (or choose another)
+
+</details>
+
+## License
+
+See [LICENSE.md](LICENSE.md) for license terms and attribution.
